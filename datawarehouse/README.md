@@ -1,1 +1,1 @@
-This sub directory should contain anything to do with the datawarehouse pipelines
+This sub directory should contain anything to do with the datawarehouse pipelines.

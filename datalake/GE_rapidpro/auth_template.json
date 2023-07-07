@@ -1,0 +1,16 @@
+{
+    "Big Sis": {
+        "name": "Big Sis",
+        "token": "ADD_YOUR_TOKEN",
+        "start_flow": "03e765b7-f45f-4d2b-aa49-ee536139f14e",
+        "lookup_flow": "e9010d4c-cf0b-4858-8f8f-4e26230fee19",
+        "quiz_flows" : ["350b5179-6021-4ddf-9113-2ea9960abc99", "14a50cc6-c3f1-4703-902c-739481d43d63", "c36a0222-803c-4480-a810-121cb8c2137f"]
+    },
+    "Chhaa Jaa" : {
+        "name": "Chhaa Jaa",
+        "token": "ADD_YOUR_TOKEN",
+        "start_flow": "a9fff799-8fe6-4868-b43f-371e584c701e",
+        "lookup_flow": "d395652e-5b87-49b9-8ccf-c1b50a2db8f5",
+        "quiz_flows" : ["3d555a47-1b32-4a6b-b5a5-0c87fe8b230e"]
+    }
+}

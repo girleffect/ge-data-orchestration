@@ -1,0 +1,2 @@
+- Each channel has its own credentials
+- YouTube Analytics API only returns JSON (alt parameter in https://developers.google.com/youtube/analytics/reference/reports/query )

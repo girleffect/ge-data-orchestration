@@ -20,7 +20,7 @@ def get_insights(page: Page):
 
     # https://developers.facebook.com/docs/graph-api/reference/v17.0/insights
     fields = []
-    params = {"date_preset": "maximum", "period": "day", "metric": ["page_fans", "page_fan_adds_unique", "page_impressions_unique", "page_views_total", "page_engaged_users"]}
+    params = {"date_preset": "maximum", "period": "day", "metric": ["page_fans", "page_fan_adds_unique", "page_impressions_unique", "page_views_total", "page_engaged_users", "page_impressions_by_age_gender_unique", "page_fans_gender_age"]}
     page_insights = Page(page.get_id()).get_insights(fields=fields, params=params)
 
     insights_data = []

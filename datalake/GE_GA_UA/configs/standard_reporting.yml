@@ -1,0 +1,20 @@
+start_date: 3_days_ago
+end_date: yesterday
+metrics:
+  - ga:sessions
+  - ga:bounces
+  - ga:newusers
+  - ga:pageViews
+  - ga:avgSessionDuration
+  - ga:users
+dimensions:
+  - ga:date
+  - ga:source
+  - ga:medium
+  - ga:deviceCategory
+  - ga:browser
+  - ga:country
+  - ga:mobileDeviceModel
+  - ga:mobileDeviceBranding
+view_ids:
+  - 198411294

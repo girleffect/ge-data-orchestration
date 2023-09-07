@@ -1,0 +1,12 @@
+start_date: 2021-11-24
+end_date: yesterday
+metrics:
+  - ga:users
+  - ga:newUsers
+dimensions:
+  - ga:region
+  - ga:country
+  - ga:deviceCategory
+  - ga:deviceModel
+view_ids:
+  - 198411294

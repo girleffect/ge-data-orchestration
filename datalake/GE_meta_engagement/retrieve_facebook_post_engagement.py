@@ -21,7 +21,7 @@ def get_insights(page: Page):
     FacebookAdsApi.init(access_token=page["access_token"], debug=True)
 
     # https://developers.facebook.com/docs/graph-api/reference/post/
-    fields = ["id", "created_time", "message", "permalink_url", "shares"]
+    fields = ["id", "created_time", "message", "permalink_url", "shares", "updated_time"]
     params = {}
 
     for post in Page(page.get_id()).get_posts(fields=fields, params=params):

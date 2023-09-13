@@ -74,7 +74,12 @@ def run_ad_level(single_date):
                       'video_p50_watched_actions',
                       'video_p75_watched_actions',
 
-                      'actions']
+                      'actions',
+                      'unique_clicks',
+                      'unique_actions',
+                      'cost_per_unique_click',
+                      'cost_per_unique_action_type'
+            ]
 
             account_data = my_account["ad_account"].get_insights(fields=fields, params=params)
             if account_data:
@@ -119,6 +124,11 @@ def run_reach(single_date, level):
                       'spend',
                       'reach',
                       'cpm'
+
+                      'unique_clicks',
+                      'unique_actions',
+                      'cost_per_unique_click',
+                      'cost_per_unique_action_type'
             ]
 
             account_data = my_account["ad_account"].get_insights(fields=fields, params=params)

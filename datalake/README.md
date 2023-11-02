@@ -1,7 +1,7 @@
 This sub directory should contains anything to do with the datalake pipelines.
 
-##Docker
-#### Building the docker container:
+## Docker
+### Building the docker container:
  - `cd datalake && docker build -t girleffect .`
  - Note that in the above code the `girleffect` is the resulting image name.
 

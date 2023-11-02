@@ -52,7 +52,8 @@ local_writer = YouTubeWriter(
         configs={"overwrite": True},
         clear_destination=True,
     )
-    azure_writer = YouTubeWriter(
+
+azure_writer = YouTubeWriter(
         container=container,
         destination="azure_json",
         configs={

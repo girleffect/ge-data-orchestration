@@ -14,6 +14,7 @@ docker run --rm -it -v "$HOME/.azure-docker:/root/.azure" \
     -e STORAGE_ACCOUNT="azure cloud storage" \
     -e CONTAINER="container_name" \
     -e SLACK_BOT_TOKEN="slack bot token here" \
+    -e SOURCE="youtube" \
     girleffect
 
 ```
@@ -24,6 +25,7 @@ docker run --rm -it -v "$HOME/.azure-docker:/root/.azure" \
 - `girleffect` is the docker image name that is to be run
 - `--rm` just ensures that the container is deleted ones it is done running.
 - `-it` means running the docker container in interactive mode and allowing us to see the logs as it runs. Other options is `-d` meaning silent.
+- Environment value `SOURCE` will determine which pipeline is run. For youtube we need to pass in `youtube`
 
 # TODO:
 - Upload the docker image to Azure ACR

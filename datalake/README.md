@@ -1,6 +1,16 @@
 This sub directory should contains anything to do with the datalake pipelines.
 
 ## Docker
+
+Installing docker on your local machine for testing:
+
+[Docker Desktop](https://www.docker.com/products/docker-desktop/)
+
+- Using the above you should be able to install docker on your windows, linux or mac laptop.
+- Just know this can be a bit memory expensive so make sure you are not running alot of memory intensive apps.
+- Also stop the service when you are not running any docker containers.
+- Also remember to run your docker with the `--rm` flag so as to remove the container when it is done (consumes memory).
+
 ### Building the docker container:
  - From the root of the repo run `cd datalake && docker build -t girleffect .`
  - Note that in the above code the `girleffect` is the resulting image name.

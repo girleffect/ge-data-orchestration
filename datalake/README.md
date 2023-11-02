@@ -4,7 +4,7 @@ This sub directory should contains anything to do with the datalake pipelines.
 
 Installing docker on your local machine for testing:
 
-[Docker Desktop](https://www.docker.com/products/docker-desktop/)
+[Docker Desktop Website](https://www.docker.com/products/docker-desktop/)
 
 - Using the above you should be able to install docker on your windows, linux or mac laptop.
 - Just know this can be a bit memory expensive so make sure you are not running alot of memory intensive apps.

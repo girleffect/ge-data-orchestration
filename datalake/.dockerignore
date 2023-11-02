@@ -1,0 +1,16 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+**/*.json
+**/*.csv
+./videos
+./videos_2
+
+.vscode
+!./GE_YT/secrets/*.json
+!./GE_YT/configs/*.json
+GE_YT/cloudstorage/
+GE_YT/infra/
+

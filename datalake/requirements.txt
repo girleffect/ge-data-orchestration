@@ -1,0 +1,7 @@
+google-api-python-client
+pandas
+azure-storage-blob
+azure-identity
+pyaml
+slack_sdk
+dotenv-cli

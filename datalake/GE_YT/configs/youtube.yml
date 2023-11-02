@@ -1,0 +1,48 @@
+channels:
+  mine: true,
+  part:
+    [
+      "brandingSettings",
+      "contentDetails",
+      "contentOwnerDetails",
+      "id",
+      "localizations",
+      "snippet",
+      "statistics",
+      "status",
+      "topicDetails",
+    ]
+
+basic_stats:
+  metrics: ["views"]
+  dimensions: ["day", "insightTrafficSourceType"]
+  sort: "day"
+
+source_stats:
+  metrics:
+    [
+      "views",
+      "estimatedMinutesWatched",
+      "averageViewDuration",
+      "likes",
+      "dislikes",
+      "comments",
+      "subscribersGained",
+      "subscribersLost",
+    ]
+  dimensions: ["day"]
+
+video_stats:
+  metrics:
+    [
+      "views",
+      "estimatedMinutesWatched",
+      "averageViewDuration",
+      "likes",
+      "dislikes",
+      "comments",
+      "subscribersGained",
+      "subscribersLost",
+    ]
+  dimensions: ["day"]
+  sort: "day"

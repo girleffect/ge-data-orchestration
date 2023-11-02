@@ -1,5 +1,5 @@
 - Each channel has its own credentials
-- YouTube Analytics API only returns JSON (alt parameter in https://developers.google.com/youtube/analytics/reference/reports/query )
+- YouTube Analytics API only returns JSON (alt parameter in [youtube analytic](https://developers.google.com/youtube/analytics/reference/reports/query))
 
 ## Readers and Writers
 ### datapipeline.py
@@ -81,7 +81,7 @@ azure_writer = YouTubeWriter(
           azure_writer.sink(payload=result, folder_path="channels")
 ```
 - Above calls the reader method `get_channels` which gets channel data and then write the data.
-- Write format `container_name/channels/Chhaa Jaa/2023/11/01/2023-11-01-UCtFXX6FvFUxJBfvPxr7hgpg.json`
+- Write format `container_name/channels/Chhaa Jaa/2023/11/01/2023-11-01-channel_id.json`
 
 #### Basic stats and Source Stats
 ```PYTHON

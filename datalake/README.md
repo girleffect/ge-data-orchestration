@@ -1,6 +1,7 @@
 This sub directory should contains anything to do with the datalake pipelines.
 
-### Building the dockewr container:
+##Docker
+#### Building the docker container:
  - `cd datalake && docker build -t girleffect .`
  - Note that in the above code the `girleffect` is the resulting image name.
 
@@ -27,7 +28,7 @@ docker run --rm -it -v "$HOME/.azure-docker:/root/.azure" \
 - `-it` means running the docker container in interactive mode and allowing us to see the logs as it runs. Other options is `-d` meaning silent.
 - Environment value `SOURCE` will determine which pipeline is run. For youtube we need to pass in `youtube`
 
-# TODO:
+### TODO:
 - Upload the docker image to Azure ACR
 - Use the uploaded image to run the pipeline in azure
 - Possibly implement download of secrets from azure cloud storage? or from azure data vault.

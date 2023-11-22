@@ -1,19 +1,18 @@
-"""YOUTUBE API READER"""
 #!/usr/bin/python
+"""YOUTUBE API READER"""
 # pylint: disable=unused-import
-import os
-import time
+import sys, os
+
+sys.path.append("../")
+
 from datetime import date, timedelta
 from typing import Generator, Any, Dict
-
-# from typing import Union
-from concurrent.futures import ThreadPoolExecutor, wait, as_completed
 
 from googleapiclient.discovery import build
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 
-from utils import load_file
+from utils.file_handlers import load_file
 
 
 class YouTubeAPIAuthenticator:

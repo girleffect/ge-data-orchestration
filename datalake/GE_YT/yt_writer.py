@@ -1,4 +1,9 @@
+#!/usr/bin/python
 """YOUTUBE API WRITER"""
+import sys
+
+sys.path.append("../")
+
 from typing import List, Tuple, Union, Dict, Any
 from base_writers import BaseWriter
 

@@ -1,11 +1,15 @@
 """MODULE TO CALL DATAPIPELINE"""
+import sys
+
+sys.path.append("../")
+
 import time
 import argparse
 
 from yt_reader import YouTubeAPIAuthenticator, YouTubeReader
 from yt_writer import YouTubeWriter
 
-from utils import load_file
+from utils.file_handlers import load_file
 
 
 def main():
@@ -49,20 +53,20 @@ def main():
     )
 
     for result in reader.get_channels(configs=configs["channels"]):
-        local_writer.sink(payload=result, folder_path="channels")
+        # local_writer.sink(payload=result, folder_path="channels")
         azure_writer.sink(payload=result, folder_path="channels")
     # exit(0)
     for result in reader.get_other_stats(other_endpoints):
         endpoint = result["endpoint"]
-        local_writer.sink(payload=result, folder_path=endpoint)
+        # local_writer.sink(payload=result, folder_path=endpoint)
         azure_writer.sink(payload=result, folder_path=endpoint)
 
     for channel_video in reader.get_channel_videos():
-        local_writer.sink(payload=channel_video, folder_path="channel_videos")
+        # local_writer.sink(payload=channel_video, folder_path="channel_videos")
         azure_writer.sink(payload=channel_video, folder_path="channel_videos")
 
     for video in reader.get_videos(configs=configs["video_stats"]):
-        local_writer.sink(payload=video, folder_path="video_stats")
+        # local_writer.sink(payload=video, folder_path="video_stats")
         azure_writer.sink(payload=video, folder_path="video_stats")
 
 

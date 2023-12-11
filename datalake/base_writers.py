@@ -33,7 +33,7 @@ class AzureConnectionStringAuthenticator:
             "AZURE_STORAGE_CONNECTION_STRING"
         ):
             raise KeyError("Provide AZURE STORAGE CONNECTION STRING")
-        
+
         connect_str = os.getenv("AZURE_STORAGE_CONNECTION_STRING", "")
         if configs.get("AZURE_STORAGE_CONNECTION_STRING"):
             connect_str = configs["AZURE_STORAGE_CONNECTION_STRING"]
@@ -262,9 +262,12 @@ class BaseWriter(ABC):
 
         raise NotImplementedError
 
-    def sink(self, payload, folder_path: str):
+    def sink(self, payload, folder_path: str, path_prefix: Union[str, None] = None):
         """method to write data"""
 
+        folder_path = (
+            f"{prefix}/{folder_path}" if (prefix := path_prefix) else folder_path
+        )
         data_path, data = self.verify_data(payload)
         write_path = f"{folder_path}/{data_path}"
         delete_path = write_path.rsplit("/", maxsplit=1)[0].strip()

@@ -1,10 +1,11 @@
 #!/usr/bin/python
 """YOUTUBE API READER"""
 # pylint: disable=unused-import
-import sys, os
+import sys
 
 sys.path.append("../")
 
+import os
 from datetime import date, timedelta
 from typing import Generator, Any, Dict
 
@@ -89,7 +90,7 @@ class YouTubeReader:
             "dimensions": ",".join([dim for dim in curr_configs.pop("dimensions")]),
         }
         curr_configs.update(extra_args)
-        if endpoint == "video_stats":
+        if endpoint in ["video_stats", "traffic_source"]:
             curr_configs["filters"] = f"video=={curr_configs['filters']}"
 
         return curr_configs
@@ -194,7 +195,30 @@ class YouTubeReader:
                     "data": result,
                     "date": self.run_date.strftime("%Y-%m-%d"),
                     "channel_data": channel,
-                    "suffix": f"videoid_{video['video_id']}",
+                    "suffix": f"--{video['video_id']}",
+                }
+
+    def get_trafffic_source(
+        self, configs: dict
+    ) -> Generator[Dict[Any, Any], None, None]:
+        """method to get video stats"""
+        for channel in self.channels:
+            channel_name = channel["channel_name"]
+            videos = self.channel_videos[channel_name]
+            for video in videos:
+                video = self.__unpack_video(video, configs)
+                result = self.get_stats(
+                    endpoint="traffic_source",
+                    ids=channel["channel_id"],
+                    startdate=video["video_startdate"],
+                    enddate=self.prev_date,
+                    configs=video["video_config"],
+                )
+                yield {
+                    "data": result,
+                    "date": self.run_date.strftime("%Y-%m-%d"),
+                    "channel_data": channel,
+                    "suffix": f"--{video['video_id']}",
                 }
 
     def get_other_stats(self, configs: dict) -> Generator[Dict[Any, Any], None, None]:

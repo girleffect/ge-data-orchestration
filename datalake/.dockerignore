@@ -1,5 +1,7 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
+
+**/__pycache__/
 *.py[cod]
 *$py.class
 
@@ -9,8 +11,11 @@ __pycache__/
 ./videos_2
 
 .vscode
-!./GE_YT/secrets/*.json
+# !./GE_YT/secrets/*.json
+./GE_YT/secrets/*.json
 !./GE_YT/configs/*.json
-GE_YT/cloudstorage/
-GE_YT/infra/
+./GE_YT/cloudstorage/
+./GE_YT/infra/
+**/data/
+./infra/
 

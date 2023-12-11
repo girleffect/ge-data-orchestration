@@ -51,7 +51,8 @@ class YouTubeWriter(BaseWriter):
         data = payload["data"]
         year, month, day = date_split[0], date_split[1], date_split[2]
 
-        data_path = f"{channel_name}/{year}/{month}/{day}/{date}-{channel_id}"
+        data_path = f"{channel_name}/{year}/{month}/{day}/{date}"
+
         if payload.get("suffix"):
-            data_path = f"{data_path}_{payload['suffix']}"
+            data_path = f"{data_path}{payload['suffix']}"
         return data_path, data

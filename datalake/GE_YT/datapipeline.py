@@ -72,13 +72,17 @@ def main():
             payload=channel_video, folder_path="channel_videos", path_prefix=folder_path
         )
 
-    for video in reader.get_videos(configs=configs["video_stats"]):
+    for video in reader.get_videos(
+        configs=configs["video_stats"], endpoint="video_stats"
+    ):
         # local_writer.sink(payload=video, folder_path="video_stats")
         azure_writer.sink(
             payload=video, folder_path="video_stats", path_prefix=folder_path
         )
 
-    for video in reader.get_trafffic_source(configs=configs["traffic_source"]):
+    for video in reader.get_videos(
+        configs=configs["traffic_source"], endpoint="traffic_source"
+    ):
         # local_writer.sink(payload=video, folder_path="source_traffic")
         azure_writer.sink(
             payload=video, folder_path="traffic_source", path_prefix=folder_path

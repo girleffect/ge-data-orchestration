@@ -24,4 +24,3 @@ COPY *.py .
 RUN chmod +x run.sh
 
 CMD ["bash", "-c", "./run.sh 2> >(python ./log_errors.py) | tee"]
-

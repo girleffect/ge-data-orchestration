@@ -177,29 +177,8 @@ class YouTubeReader:
         self.channel_videos.setdefault(channel_name, []).extend(channel_videos)
         return channel_videos
 
-    def get_videos(self, configs: dict) -> Generator[Dict[Any, Any], None, None]:
-        """method to get video stats"""
-        for channel in self.channels:
-            channel_name = channel["channel_name"]
-            videos = self.channel_videos[channel_name]
-            for video in videos:
-                video = self.__unpack_video(video, configs)
-                result = self.get_stats(
-                    endpoint="video_stats",
-                    ids=channel["channel_id"],
-                    startdate=video["video_startdate"],
-                    enddate=self.prev_date,
-                    configs=video["video_config"],
-                )
-                yield {
-                    "data": result,
-                    "date": self.run_date.strftime("%Y-%m-%d"),
-                    "channel_data": channel,
-                    "suffix": f"--{video['video_id']}",
-                }
-
-    def get_trafffic_source(
-        self, configs: dict
+    def get_videos(
+        self, configs: dict, endpoint: str
     ) -> Generator[Dict[Any, Any], None, None]:
         """method to get video stats"""
         for channel in self.channels:
@@ -208,7 +187,7 @@ class YouTubeReader:
             for video in videos:
                 video = self.__unpack_video(video, configs)
                 result = self.get_stats(
-                    endpoint="traffic_source",
+                    endpoint=endpoint,
                     ids=channel["channel_id"],
                     startdate=video["video_startdate"],
                     enddate=self.prev_date,

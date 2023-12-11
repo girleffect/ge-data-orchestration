@@ -1,13 +1,45 @@
 #!/usr/bin/env bash
-if [[ "${SOURCE}" == "youtube" ]]; then
-    
-    mkdir -p GE_YT/secrets
+error_handler() {
+  echo ${1} 1>&2
+#   echo 'Failing command on line: %d' "${BASH_LINENO[0]}" 1>&2
+#   echo 'Stack trace:' 1>&2
+#   while caller $((n++)) 1>&2; do :; done
+  exit 1
+}
+# trap error_handler ERR
 
-    python -u GE_YT/"${PYSCRIPT:-datapipeline.py}" \
+
+if [[ "${SOURCE}" == "youtube" ]]; then
+    if [[ -z "${SECRETS_SAS_TOKEN}" ]] then
+        # error_handler 
+        echo 'Please provide SECRETS_SAS_TOKEN for secrets storage' 1>&2
+        exit 1
+    fi
+
+    if [[ -z "${SECRETS_FILE}" ]] then
+        # error_handler 
+        echo 'Please provide path to SECRETS_FILE' 1>&2
+        exit 1
+    fi
+
+    secrets_download=$(az storage blob download --container-name you-tube \
+        --name $SECRETS_FILE --file GE_YT/secrets/youtube.json --account-name \
+        dpconfig --sas-token $SECRETS_SAS_TOKEN | jq)
+
+    printf "done downloading secrets file to GE_YT/secrets/youtube.json"
+
+    ls -l GE_YT/secrets
+    echo ''
+    SECRETS_FILE="GE_YT/secrets/youtube.json"
+
+    CMD=$(python -u "GE_YT/${PYSCRIPT:-datapipeline.py}" \
         --secrets_file="${SECRETS_FILE}" \
         --config_file="${CONFIG_FILE}" \
         --storage_account="${STORAGE_ACCOUNT}" \
-        --container="${CONTAINER}"
+        --container="${CONTAINER_NAME}" \
+        --folder_path="${FOLDER_PATH}"
+        )
+    eval "${CMD}"
 
-    echo '"${SOURCE}" script completed successfully'
+    echo "${SOURCE} script completed"
 fi

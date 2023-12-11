@@ -1,4 +1,5 @@
 #!/usr/bin/python
+#!/usr/bin/python
 """writers module"""
 import os
 import json
@@ -7,6 +8,7 @@ from typing import Union, Dict, Any
 import yaml
 
 import pandas as pd
+
 from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
 
@@ -41,9 +43,7 @@ def load_file(file_location: str, fmt: Union[str, None] = None) -> Dict[Any, Any
     """
     config: dict = {}
     if file_location.strip().rsplit(".", maxsplit=1)[-1] not in ["json", "yml", "yaml"]:
-        raise TypeError(
-            f"Wrong file type provided! Expecting only json and yaml files \n{file_location}"
-        )
+        raise TypeError("Wrong file type provided! Expecting only json and yaml files")
 
     file_location = str(file_location).strip()
     if file_location.endswith("yml"):

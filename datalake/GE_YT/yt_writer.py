@@ -34,7 +34,7 @@ class YouTubeWriter(BaseWriter):
             payload (Dict[str, Any]): expecting a dictionary having data, date and dimension
         Raises:
             KeyError: if we do not find the exact keys we expect from the payload
-            TypeError: if provided data object is not a list
+            TypeError: if provided data object is not a list.
         Returns:
             Tuple[str, Union[List[Dict[Any, Any]], Dict[Any, Any], Any]]: full destination path and
         """

@@ -32,6 +32,10 @@ source_stats:
     ]
   dimensions: ["day"]
 
+traffic_source:
+  dimensions: ["day", "insightTrafficSourceType"]
+  metrics: ["views", "estimatedMinutesWatched"]
+
 video_stats:
   metrics:
     [

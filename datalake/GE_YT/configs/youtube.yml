@@ -1,5 +1,6 @@
 channels:
-  mine: true,
+  start_date: "today"
+  mine: true
   part:
     [
       "brandingSettings",
@@ -14,11 +15,17 @@ channels:
     ]
 
 basic_stats:
+  start_date: "2_days_ago"
+  end_date: "2_days_ago"
+  interval: "1_day"
   metrics: ["views"]
   dimensions: ["day", "insightTrafficSourceType"]
   sort: "day"
 
 source_stats:
+  start_date: "2_days_ago"
+  end_date: "2_days_ago"
+  interval: "1_day"
   metrics:
     [
       "views",
@@ -33,10 +40,16 @@ source_stats:
   dimensions: ["day"]
 
 traffic_source:
+  start_date: "2_days_ago"
+  end_date: "2_days_ago"
+  interval: "1_day"
   dimensions: ["day", "insightTrafficSourceType"]
   metrics: ["views", "estimatedMinutesWatched"]
 
 video_stats:
+  start_date: "2_days_ago"
+  end_date: "2_days_ago"
+  interval: "1_day"
   metrics:
     [
       "views",

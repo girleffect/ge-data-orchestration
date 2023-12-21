@@ -1,24 +1,10 @@
+#!/usr/bin/python
 """MODULE TO LOG ERRORS AND SEND NOTIFICATIONS"""
 # pylint: disable=broad-except
 import sys
-import os
 from typing import Union
-from slack_sdk import WebClient
-from slack_sdk.errors import SlackApiError
 
-
-def slack_helper(text: str, channel: str = "data-platform-alerts") -> None:
-    """SLACK NOTIFICATION HELPER"""
-    client = WebClient(token=os.environ["SLACK_BOT_TOKEN"])
-
-    try:
-        _ = client.chat_postMessage(channel=channel, text=text)
-    except SlackApiError as err:
-        # You will get a SlackApiError if "ok" is False
-        error_msg = err.response["error"]
-        print(f"Got an error: {error_msg}")
-        if err.response["ok"] is False:
-            raise Exception(error_msg) from err
+from utils.notification_handler import slack_helper
 
 
 def main() -> None:

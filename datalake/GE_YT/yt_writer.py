@@ -27,14 +27,17 @@ class YouTubeWriter(BaseWriter):
         )
 
     def verify_data(
-        self, payload: Union[Dict[Any, Any], Any]
+        self,
+        payload: Union[Dict[Any, Any], Any],
+        folder_path: Union[str, None] = None,
+        folder_name: Union[str, None] = None,
     ) -> Tuple[str, Union[List[Dict[Any, Any]], Dict[Any, Any], Any]]:
         """
         Args:
             payload (Dict[str, Any]): expecting a dictionary having data, date and dimension
         Raises:
             KeyError: if we do not find the exact keys we expect from the payload
-            TypeError: if provided data object is not a list.
+            TypeError: if provided data object is not a list
         Returns:
             Tuple[str, Union[List[Dict[Any, Any]], Dict[Any, Any], Any]]: full destination path and
         """
@@ -51,8 +54,16 @@ class YouTubeWriter(BaseWriter):
         data = payload["data"]
         year, month, day = date_split[0], date_split[1], date_split[2]
 
-        data_path = f"{channel_name}/{year}/{month}/{day}/{date}"
+        file_name = f"{file_name}" if (file_name := payload.get("file_name")) else date
+        file_name = (
+            f"{file_name}{file_suffix}"
+            if (file_suffix := payload.get("file_suffix"))
+            else file_name
+        )
+        data_path = f"{channel_name}/{year}/{month}/{day}"
 
-        if payload.get("suffix"):
-            data_path = f"{data_path}{payload['suffix']}"
+        data_path = f"{fpath}/{data_path}" if (fpath := folder_path) else data_path
+        data_path = f"{data_path}/{fname}" if (fname := folder_name) else data_path
+
+        data_path = f"{data_path}/{file_name}"
         return data_path, data

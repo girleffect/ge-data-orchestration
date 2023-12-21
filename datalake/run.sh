@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 error_handler() {
   echo ${1} 1>&2
-#   echo 'Failing command on line: %d' "${BASH_LINENO[0]}" 1>&2
-#   echo 'Stack trace:' 1>&2
-#   while caller $((n++)) 1>&2; do :; done
+  while caller $((n++)) 1>&2; do :; done
   exit 1
 }
 # trap error_handler ERR
@@ -22,7 +20,7 @@ if [[ "${SOURCE}" == "youtube" ]]; then
         exit 1
     fi
 
-    secrets_download=$(az storage blob download --container-name you-tube \
+    secrets_download=$(az storage blob download --no-progress --container-name you-tube \
         --name $SECRETS_FILE --file GE_YT/secrets/youtube.json --account-name \
         dpconfig --sas-token $SECRETS_SAS_TOKEN | jq)
 
@@ -32,14 +30,12 @@ if [[ "${SOURCE}" == "youtube" ]]; then
     echo ''
     SECRETS_FILE="GE_YT/secrets/youtube.json"
 
-    CMD=$(python -u "GE_YT/${PYSCRIPT:-datapipeline.py}" \
+    python -u "GE_YT/${PYSCRIPT:-datapipeline.py}" \
         --secrets_file="${SECRETS_FILE}" \
         --config_file="${CONFIG_FILE}" \
         --storage_account="${STORAGE_ACCOUNT}" \
         --container="${CONTAINER_NAME}" \
         --folder_path="${FOLDER_PATH}"
-        )
-    eval "${CMD}"
 
     echo "${SOURCE} script completed"
 fi

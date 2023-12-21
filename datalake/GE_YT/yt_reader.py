@@ -2,18 +2,33 @@
 """YOUTUBE API READER"""
 # pylint: disable=unused-import
 import sys
-
-sys.path.append("../")
-
 import os
 from datetime import date, timedelta
 from typing import Generator, Any, Dict
 
+sys.path.append("../")
+
+
 from googleapiclient.discovery import build
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
+from googleapiclient.errors import HttpError
 
 from utils.file_handlers import load_file
+from utils.date_handlers import string_to_date, date_iterator
+from utils.quota_handler import retry_handler, api_handler
+
+
+class YouTubeException(Exception):
+    """Base class exception"""
+
+
+class QuotaLimitError(YouTubeException):
+    """Class for QuotaLimit"""
+
+
+class UncapturedError(YouTubeException):
+    """Class for UncapturedError"""
 
 
 class YouTubeAPIAuthenticator:
@@ -66,8 +81,6 @@ class YouTubeReader:
         self.channels: list = []
         self.videos: list = []
         self.channel_videos: dict = {}
-        self.run_date = date.today()
-        self.prev_date = (self.run_date - timedelta(days=1)).strftime("%Y-%m-%d")
         self.set_environment(env)
 
     def set_environment(self, env) -> None:
@@ -81,6 +94,7 @@ class YouTubeReader:
         self, configs: dict, endpoint: str, ids: str, startdate: str, enddate: str
     ) -> dict:
         """method for building query"""
+        # _ = configs.pop("start_date", None), configs.pop("end_date", None)
         curr_configs = dict([(k, v) for k, v in configs.items()])
         extra_args = {
             "ids": f"channel=={ids}",
@@ -95,23 +109,36 @@ class YouTubeReader:
 
         return curr_configs
 
+    @retry_handler(
+        exceptions=QuotaLimitError, initial_wait=3, total_tries=3, backoff_factor=2
+    )
+    @retry_handler(
+        exceptions=UncapturedError, initial_wait=3, total_tries=3, backoff_factor=2
+    )
+    @api_handler(wait=1, backoff_factor=2)
     def get_stats(
         self, ids: str, endpoint: str, startdate: str, enddate: str, configs: dict
     ) -> dict:
         """method to fetch a channel_analytics"""
-        params = self.build_query(
-            configs=configs,
-            endpoint=endpoint,
-            ids=ids,
-            startdate=startdate,
-            enddate=enddate,
-        )
-        request = self.authenticator.youtube_analytics.reports().query(**params)
+        try:
+            params = self.build_query(
+                configs=configs,
+                endpoint=endpoint,
+                ids=ids,
+                startdate=startdate,
+                enddate=enddate,
+            )
+            request = self.authenticator.youtube_analytics.reports().query(**params)
 
-        results: dict = request.execute()
-        # print(f"length of {endpoint } results: {len(results)}")
+            results: dict = request.execute()
+            # print(f"length of {endpoint } results: {len(results)}")
 
-        return results
+            return results
+        except HttpError as err:
+            if err.resp.status in [429]:
+                raise QuotaLimitError(err.reason) from err
+        except Exception as err:
+            raise UncapturedError(err) from err
 
     def __unpack_channel(self, channel_obj) -> dict:
         """method to unpack channel object"""
@@ -139,8 +166,8 @@ class YouTubeReader:
     def get_channels(self, configs: dict) -> Generator[Dict[Any, Any], None, None]:
         """method to get channels"""
         print("getting channels")
+        start_date = string_to_date(configs.pop("start_date", "today"))
         request = self.authenticator.youtube.channels().list(
-            # auditDetails is out of the scope
             part=",".join([val for val in configs["part"]]),
             mine=configs.get("part", True),
         )
@@ -149,7 +176,7 @@ class YouTubeReader:
             channel_data = self.__unpack_channel(channel_obj=_channel)
             yield {
                 "data": channel_data,
-                "date": self.run_date.strftime("%Y-%m-%d"),
+                "date": start_date.strftime("%Y-%m-%d"),
                 "channel_data": channel_data,
             }
             self.channels.append(channel_data)
@@ -181,49 +208,76 @@ class YouTubeReader:
         self, configs: dict, endpoint: str
     ) -> Generator[Dict[Any, Any], None, None]:
         """method to get video stats"""
+        start_date = configs.pop("start_date", "2_days_ago")
+        end_date = configs.pop("end_date", "1_day_ago")
+        interval = configs.pop("interval", "1_day")
+
         for channel in self.channels:
             channel_name = channel["channel_name"]
             videos = self.channel_videos[channel_name]
-            for video in videos:
-                video = self.__unpack_video(video, configs)
-                result = self.get_stats(
-                    endpoint=endpoint,
-                    ids=channel["channel_id"],
-                    startdate=video["video_startdate"],
-                    enddate=self.prev_date,
-                    configs=video["video_config"],
-                )
-                yield {
-                    "data": result,
-                    "date": self.run_date.strftime("%Y-%m-%d"),
-                    "channel_data": channel,
-                    "suffix": f"--{video['video_id']}",
-                }
+            for start_date, end_date in date_iterator(
+                start_date=start_date,
+                end_date=end_date,
+                interval=interval,
+                end_inclusive=True,
+                time_format="%Y-%m-%d",
+            ):
+                for video in videos:
+                    video = self.__unpack_video(video, configs)
+                    metadata = {
+                        "channelId": channel["channel_id"],
+                        "videoId": video["video_id"],
+                    }
+                    result = self.get_stats(
+                        endpoint=endpoint,
+                        ids=channel["channel_id"],
+                        startdate=start_date,
+                        enddate=end_date,
+                        configs=video["video_config"],
+                    )
+                    result.update(metadata)
+                    yield {
+                        "data": result,
+                        "date": start_date,
+                        "channel_data": channel,
+                        "file_suffix": f"-{video['video_id']}",
+                    }
 
     def get_other_stats(self, configs: dict) -> Generator[Dict[Any, Any], None, None]:
         """method to get other stats"""
         for channel in self.channels:
             for endpoint, config in configs.items():
-                result = self.get_stats(
-                    endpoint=endpoint,
-                    ids=channel["channel_id"],
-                    startdate=channel["channel_startdate"],
-                    enddate=self.prev_date,
-                    configs=config,
-                )
-                yield {
-                    "data": result,
-                    "date": self.run_date.strftime("%Y-%m-%d"),
-                    "channel_data": channel,
-                    "endpoint": endpoint,
-                }
+                start_date = config.pop("start_date", "2_days_ago")
+                end_date = config.pop("end_date", "1_day_ago")
+                interval = config.pop("interval", "1_day")
+                for start_date, end_date in date_iterator(
+                    start_date=start_date,
+                    end_date=end_date,
+                    interval=interval,
+                    end_inclusive=True,
+                    time_format="%Y-%m-%d",
+                ):
+                    result = self.get_stats(
+                        endpoint=endpoint,
+                        ids=channel["channel_id"],
+                        startdate=start_date,
+                        enddate=end_date,
+                        configs=config,
+                    )
+                    yield {
+                        "data": result,
+                        "date": start_date,
+                        "channel_data": channel,
+                        "endpoint": endpoint,
+                    }
 
     def get_channel_videos(self):
         """method to get back channel videos"""
+        start_date = string_to_date("today")
         for channel in self.channels:
             channel_videos = self.fetch_channel_videos(channel=channel)
             yield {
                 "data": channel_videos,
-                "date": self.run_date.strftime("%Y-%m-%d"),
+                "date": start_date.strftime("%Y-%m-%d"),
                 "channel_data": channel,
             }

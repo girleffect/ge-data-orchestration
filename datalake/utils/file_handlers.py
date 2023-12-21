@@ -1,5 +1,4 @@
 #!/usr/bin/python
-#!/usr/bin/python
 """writers module"""
 import os
 import json
@@ -8,9 +7,6 @@ from typing import Union, Dict, Any
 import yaml
 
 import pandas as pd
-
-from slack_sdk import WebClient
-from slack_sdk.errors import SlackApiError
 
 
 def save_csv_file(filename, json_content, extra_columns):
@@ -54,17 +50,3 @@ def load_file(file_location: str, fmt: Union[str, None] = None) -> Dict[Any, Any
             config = json.load(json_file)
 
     return config
-
-
-def slack_helper(text: str, channel: str = "data-platform-alerts") -> None:
-    """SLACK NOTIFICATION HELPER"""
-    client = WebClient(token=os.environ["SLACK_BOT_TOKEN"])
-
-    try:
-        _ = client.chat_postMessage(channel=channel, text=text)
-    except SlackApiError as err:
-        # You will get a SlackApiError if "ok" is False
-        error_msg = err.response["error"]
-        print(f"Got an error: {error_msg}")
-        if err.response["ok"] is False:
-            raise Exception(error_msg) from err

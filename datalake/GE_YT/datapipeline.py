@@ -56,36 +56,47 @@ def main():
     )
 
     for result in reader.get_channels(configs=configs["channels"]):
-        # local_writer.sink(payload=result, folder_path="channels")
-        azure_writer.sink(
-            payload=result, folder_path="channels", path_prefix=folder_path
-        )
+        print(f"done fetching channels {len(result)}")
+        # local_writer.sink(
+        #     payload=result, folder_name="channels", folder_path=folder_path
+        # )
 
-    for result in reader.get_other_stats(other_endpoints):
-        endpoint = result["endpoint"]
-        # local_writer.sink(payload=result, folder_path=endpoint)
-        azure_writer.sink(payload=result, folder_path=endpoint, path_prefix=folder_path)
+        # azure_writer.sink(
+        #     payload=result, folder_name="channels", folder_path=folder_path
+        # )
 
     for channel_video in reader.get_channel_videos():
-        # local_writer.sink(payload=channel_video, folder_path="channel_videos")
-        azure_writer.sink(
-            payload=channel_video, folder_path="channel_videos", path_prefix=folder_path
-        )
+        print(f"done getting channel videos {len(channel_video)}")
+        # local_writer.sink(
+        #     payload=channel_video, folder_name="channel_videos", folder_path=folder_path
+        # )
+        # azure_writer.sink(
+        #     payload=channel_video, folder_name="channel_videos", folder_path=folder_path
+        # )
+
+    # for result in reader.get_other_stats(other_endpoints):
+    #     endpoint = result["endpoint"]
+    #     local_writer.sink(payload=result, folder_name=endpoint, folder_path=folder_path)
+    #     # azure_writer.sink(payload=result, folder_name=endpoint, folder_path=folder_path)
 
     for video in reader.get_videos(
         configs=configs["video_stats"], endpoint="video_stats"
     ):
-        # local_writer.sink(payload=video, folder_path="video_stats")
-        azure_writer.sink(
-            payload=video, folder_path="video_stats", path_prefix=folder_path
-        )
+        # local_writer.sink(payload=video, folder_name="videos", folder_path="channels")
+        azure_writer.sink(payload=video, folder_name="videos", folder_path="channels")
 
     for video in reader.get_videos(
         configs=configs["traffic_source"], endpoint="traffic_source"
     ):
-        # local_writer.sink(payload=video, folder_path="source_traffic")
+        # local_writer.sink(
+        #     payload=video,
+        #     folder_name="insightTrafficSourceType",
+        #     folder_path="breakdown",
+        # )
         azure_writer.sink(
-            payload=video, folder_path="traffic_source", path_prefix=folder_path
+            payload=video,
+            folder_name="insightTrafficSourceType",
+            folder_path="breakdown",
         )
 
 
@@ -94,4 +105,4 @@ if __name__ == "__main__":
     main()
     end_time = time.perf_counter()
     print(f"Elapsed run time: {end_time - start_time} seconds.")
-    ### 254.865641375 seconds.
+    # 254.865641375 seconds.

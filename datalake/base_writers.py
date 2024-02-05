@@ -221,7 +221,7 @@ class AzureJSONWriter(AzureWriter):
             container=self.container, blob=write_path
         )
         blob_client.upload_blob(
-            json.dumps(data, indent=2, sort_keys=True, ensure_ascii=False),
+            json.dumps(data, sort_keys=True, ensure_ascii=False),
             overwrite=self.overwrite,
         )
         print(f"done writting data to {self.container}/{write_path}")

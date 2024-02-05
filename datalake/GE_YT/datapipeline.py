@@ -96,7 +96,7 @@ def main():
         azure_writer.sink(
             payload=video,
             folder_name="insightTrafficSourceType",
-            folder_path="breakdown",
+            folder_path="breakdowns",
         )
 
 

@@ -22,7 +22,7 @@ def main():
     parser.add_argument("--storage_account", type=str, default="meta_engagement")
     parser.add_argument("--container", type=str)
     parser.add_argument("--folder_path", type=str, default=None)
-    parser.add_argument("--folder_name", type=str, default="meta")
+    parser.add_argument("--folder_name", type=str, default=None)
 
     args, _ = parser.parse_known_args()
     secrets_file = args.secrets_file

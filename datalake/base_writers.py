@@ -262,14 +262,11 @@ class BaseWriter(ABC):
 
         raise NotImplementedError
 
-    def sink(self, payload, folder_path: str, path_prefix: Union[str, None] = None):
+    def sink(self, payload, folder_name: str, folder_path: Union[str, None] = None):
         """method to write data"""
-
-        folder_path = (
-            f"{prefix}/{folder_path}" if (prefix := path_prefix) else folder_path
+        write_path, data = self.verify_data(
+            payload, folder_path=folder_path, folder_name=folder_name
         )
-        data_path, data = self.verify_data(payload)
-        write_path = f"{folder_path}/{data_path}"
         delete_path = write_path.rsplit("/", maxsplit=1)[0].strip()
 
         if not data:

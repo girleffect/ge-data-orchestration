@@ -1,0 +1,20 @@
+since: "3_days_ago"
+until: "yesterday"
+interval: "1_week"
+endpoint: "post_engagement"
+metric:
+  - post_impressions
+  - post_impressions_unique
+  - post_video_views_organic
+  - page_video_views
+  - post_reactions_by_type_total
+  - post_clicks_by_type
+  - post_video_avg_time_watched
+  - post_video_views
+fields:
+  - id
+  - created_time
+  - message
+  - permalink_url
+  - shares
+  - updated_time

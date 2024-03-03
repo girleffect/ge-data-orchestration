@@ -1,0 +1,9 @@
+endpoint: media_engagement
+fields:
+  - username
+  - timestamp
+  - like_count
+  - comments_count
+  - permalink
+  - media_type
+  - media_product_type

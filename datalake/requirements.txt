@@ -6,3 +6,7 @@ pyaml
 slack_sdk
 dotenv-cli
 dateutils
+facebook_business
+pytest
+coverage
+pytest-cov

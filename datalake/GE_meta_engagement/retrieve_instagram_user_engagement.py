@@ -3,7 +3,7 @@ from facebook_business.adobjects.page import Page
 from facebook_business.adobjects.user import User
 from facebook_business.adobjects.iguser import IGUser
 from configparser import ConfigParser
-import utils
+import utilss as utils
 import os
 
 FOLDER = f'./IG/user'

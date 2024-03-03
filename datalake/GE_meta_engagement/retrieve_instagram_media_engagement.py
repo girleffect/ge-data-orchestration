@@ -4,7 +4,7 @@ from facebook_business.adobjects.user import User
 from facebook_business.adobjects.iguser import IGUser
 from facebook_business.adobjects.igmedia import IGMedia
 from configparser import ConfigParser
-import utils
+import utilss as utils
 import os
 
 FOLDER = f'./IG/media'

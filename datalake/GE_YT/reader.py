@@ -83,7 +83,7 @@ class YouTubeReader:
         self.channel_videos: dict = {}
         self.set_environment(env)
 
-    def set_environment(self, env) -> None:
+    def set_environment(self, env: str) -> None:
         """METHOD TO DISABLE OAUTHLIB VERIFICATION"""
         # Disable OAuthlib's HTTPs verification when running locally.
         # *DO NOT* leave this option enabled when running in production.

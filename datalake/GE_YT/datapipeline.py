@@ -6,8 +6,8 @@ import argparse
 sys.path.append("../")
 
 
-from yt_reader import YouTubeAPIAuthenticator, YouTubeReader
-from yt_writer import YouTubeWriter
+from GE_YT.reader import YouTubeAPIAuthenticator, YouTubeReader
+from GE_YT.writer import YouTubeWriter
 
 from utils.file_handlers import load_file
 

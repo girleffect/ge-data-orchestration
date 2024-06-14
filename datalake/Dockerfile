@@ -20,6 +20,11 @@ COPY GE_YT /GE_YT
 COPY GE_meta_engagement /GE_meta_engagement
 COPY utils /utils
 COPY *.py .
+### these files ensure files are saved in LF instead of CRLF see link below
+## https://www.linkedin.com/pulse/resolving-line-ending-issues-converting-crlf-lf-windows-sonal-satpute-v8tdf/
+COPY .gitattributes .
+COPY .editorconfig .
+
 
 RUN chmod +x run.sh
 

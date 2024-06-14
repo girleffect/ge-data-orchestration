@@ -30,6 +30,7 @@ if [[ "${SOURCE}" == "youtube" ]]; then
     fi
     
     echo ${WORKSPACE}
+
     # Download secrets file from Azure Blob Storage
     secrets_download=$(az storage blob download --no-progress --container-name you-tube \
         --name "${SECRETS_FILE}" --file "${WORKSPACE}"/secrets/youtube.json --account-name \

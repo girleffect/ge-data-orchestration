@@ -101,7 +101,7 @@ class DataWriter(ABC):
     """Interface class for resource writers"""
 
     @abstractmethod
-    def write_data(self, write_path: str, data: Any) -> None:
+    def write_data(self, write_path: str, data: Any, **kwargs) -> None:
         """Method to write data to final destination resource"""
         raise NotImplementedError
 
@@ -141,7 +141,7 @@ class LocalWriter(DataWriter):
 class LocalJSONWriter(LocalWriter):
     """class for wrtting to json on local directory"""
 
-    def write_data(self, write_path: str, data: Any) -> None:
+    def write_data(self, write_path: str, data: Any, indent: int = 4) -> None:
         """method to write data"""
         self.check_exists(write_path=write_path)
         write_path = f"{write_path}.json"
@@ -149,7 +149,7 @@ class LocalJSONWriter(LocalWriter):
         with open(
             f"{self.container}/{write_path}", mode="w", encoding="utf8"
         ) as dest_file:
-            json.dump(data, dest_file, indent=4)
+            json.dump(data, dest_file, indent=indent)
             print(f"done writting data to {self.container}/{write_path}")
 
 
@@ -210,18 +210,20 @@ class AzureWriter(DataWriter):
 class AzureJSONWriter(AzureWriter):
     """class to write JSON Objects to Azure"""
 
-    def write_data(self, write_path: str, data: Union[Dict[Any, Any], List[Any]]):
+    def write_data(
+        self, write_path: str, data: Union[Dict[Any, Any], List[Any]], indent=None
+    ):
         """method to write data"""
 
         if self.configs["auth_method"] != "sas_token":
-            _ = self.check_exists(container_name=self.container)
+            _ = self.check_exists(container_name=self.container)``
 
         write_path = f"{write_path}.json"
         blob_client: BlobClient = self.service.get_blob_client(
             container=self.container, blob=write_path
         )
         blob_client.upload_blob(
-            json.dumps(data, sort_keys=True, ensure_ascii=False),
+            json.dumps(data, indent=indent, sort_keys=True, ensure_ascii=False),
             overwrite=self.overwrite,
         )
         print(f"done writting data to {self.container}/{write_path}")
@@ -256,13 +258,18 @@ class BaseWriter(ABC):
 
     @abstractmethod
     def verify_data(
-        self, payload: Union[List[Dict[Any, Any]], Dict[Any, Any], Any]
+        self,
+        payload: Union[List[Dict[Any, Any]], Dict[Any, Any], Any],
+        folder_name: Union[str, None] = None,
+        folder_path: Union[str, None] = None,
     ) -> Tuple[str, Union[List[Any], Dict[Any, Any], Any]]:
         """method to adjust data before writting to destination"""
 
         raise NotImplementedError
 
-    def sink(self, payload, folder_name: str, folder_path: Union[str, None] = None):
+    def sink(
+        self, payload, folder_name: str, folder_path: Union[str, None] = None, indent=0
+    ):
         """method to write data"""
         write_path, data = self.verify_data(
             payload, folder_path=folder_path, folder_name=folder_name
@@ -275,4 +282,4 @@ class BaseWriter(ABC):
         if (self.clear_destination is True) and (self.curr_path != delete_path):
             self.service.delete_destination(delete_path=delete_path)
             self.curr_path = delete_path
-        self.service.write_data(write_path, data)
+        self.service.write_data(write_path, data, indent)

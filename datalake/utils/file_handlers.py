@@ -2,11 +2,15 @@
 """writers module"""
 import os
 import json
+import warnings
 from pathlib import Path
 from typing import Union, Dict, Any
 import yaml
+import configparser
 
 import pandas as pd
+
+warnings.filterwarnings("ignore", category=FutureWarning)
 
 
 def save_csv_file(filename, json_content, extra_columns):
@@ -48,5 +52,8 @@ def load_file(file_location: str, fmt: Union[str, None] = None) -> Dict[Any, Any
     if file_location.endswith("json"):
         with open(file_location, mode="r", encoding="utf8") as json_file:
             config = json.load(json_file)
+    if file_location.endswith("ini"):
+        parser = configparser.ConfigParser()
+        config = parser.read(file_location)
 
     return config

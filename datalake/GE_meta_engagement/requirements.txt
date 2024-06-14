@@ -1,1 +1,5 @@
 facebook_business
+pyaml
+slack_sdk
+azure-identity
+azure-storage-blob

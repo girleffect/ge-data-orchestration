@@ -6,7 +6,7 @@ from configparser import ConfigParser
 import utilss as utils
 import os
 
-FOLDER = f'./FB/post-comment'
+FOLDER = f"./FB/post-comment"
 if not os.path.exists(FOLDER):
     os.makedirs(FOLDER)
 
@@ -23,7 +23,7 @@ def get_comments(page: Page):
     params = {}
     for post in Page(page.get_id()).get_posts(fields=fields, params=params):
         comments = []
-        for comment in PagePost(post['id']).get_comments():
+        for comment in PagePost(post["id"]).get_comments():
             comments.append(comment._json)
 
         filename = f"{FOLDER}/FB-{page['id']}-{page['name']}-{post['id']}-comments.json"
@@ -51,5 +51,5 @@ def main():
         get_comments(page)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

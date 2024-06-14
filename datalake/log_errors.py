@@ -8,7 +8,12 @@ from utils.notification_handler import slack_helper
 
 
 def main() -> None:
-    """function to log errors"""
+    """
+    Function to log errors.
+
+    Reads input from sys.stdin and logs any error messages found.
+    If an error message is found, it is printed and passed to the slack_helper function.
+    """
     error_message: Union[str, None] = None
 
     for line in sys.stdin:

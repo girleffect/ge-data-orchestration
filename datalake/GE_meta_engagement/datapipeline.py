@@ -53,8 +53,8 @@ def main():
     )
 
     for res in reader.query():
-        # local_writer.sink(payload=res, folder_path=folder_path, folder_name=folder_name)
-        azure_writer.sink(payload=res, folder_path=folder_path, folder_name=folder_name)
+        # local_writer.sink(payload=res, folder_path=folder_path, folder_name=folder_name, indent=None)
+        azure_writer.sink(payload=res, folder_path=folder_path, folder_name=folder_name, indent=None)
 
 
 if __name__ == "__main__":

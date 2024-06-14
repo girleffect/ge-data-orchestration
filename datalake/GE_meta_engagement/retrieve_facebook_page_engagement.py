@@ -5,7 +5,7 @@ from configparser import ConfigParser
 import utilss as utils
 import os
 
-FOLDER = f'./FB/page'
+FOLDER = f"./FB/page"
 if not os.path.exists(FOLDER):
     os.makedirs(FOLDER)
 
@@ -20,7 +20,19 @@ def get_insights(page: Page):
 
     # https://developers.facebook.com/docs/graph-api/reference/v17.0/insights
     fields = []
-    params = {"date_preset": "maximum", "period": "day", "metric": ["page_fans", "page_fan_adds_unique", "page_impressions_unique", "page_views_total", "page_engaged_users", "page_impressions_by_age_gender_unique", "page_fans_gender_age"]}
+    params = {
+        "date_preset": "maximum",
+        "period": "day",
+        "metric": [
+            "page_fans",
+            "page_fan_adds_unique",
+            "page_impressions_unique",
+            "page_views_total",
+            "page_engaged_users",
+            "page_impressions_by_age_gender_unique",
+            "page_fans_gender_age",
+        ],
+    }
     page_insights = Page(page.get_id()).get_insights(fields=fields, params=params)
 
     insights_data = []
@@ -55,5 +67,5 @@ def main():
         get_insights(page)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

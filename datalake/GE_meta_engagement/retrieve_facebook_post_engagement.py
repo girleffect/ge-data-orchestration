@@ -7,7 +7,7 @@ import copy
 import utilss as utils
 import os
 
-FOLDER = f'./FB/post'
+FOLDER = f"./FB/post"
 if not os.path.exists(FOLDER):
     os.makedirs(FOLDER)
 
@@ -21,16 +21,30 @@ def get_insights(page: Page):
     FacebookAdsApi.init(access_token=page["access_token"], debug=True)
 
     # https://developers.facebook.com/docs/graph-api/reference/post/
-    fields = ["id", "created_time", "message", "permalink_url", "shares", "updated_time"]
+    fields = ["id", "created_time", "message", "permalink_url", "shares"]
     params = {}
 
     for post in Page(page.get_id()).get_posts(fields=fields, params=params):
-        p = copy.copy(post)._json  # copy post value for adding new fields during iteration
+        p = copy.copy(
+            post
+        )._json  # copy post value for adding new fields during iteration
 
-        fields=[]
+        fields = []
         # TODO: change since and until params
-        params = {"since": "2023-08-01", "until": "2023-08-07", "metric": ["post_impressions", "post_impressions_unique", "post_video_views_organic", "page_video_views", "post_reactions_by_type_total", "post_clicks_by_type", "post_video_avg_time_watched"]}
-        post_insights = PagePost(post['id']).get_insights(fields=fields, params=params)
+        params = {
+            "since": "2023-08-01",
+            "until": "2023-08-07",
+            "metric": [
+                "post_impressions",
+                "post_impressions_unique",
+                "post_video_views_organic",
+                "page_video_views",
+                "post_reactions_by_type_total",
+                "post_clicks_by_type",
+                "post_video_avg_time_watched",
+            ],
+        }
+        post_insights = PagePost(post["id"]).get_insights(fields=fields, params=params)
 
         insights_data = []
         if post_insights:
@@ -65,5 +79,5 @@ def main():
         get_insights(page)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

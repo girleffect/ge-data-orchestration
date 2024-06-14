@@ -56,7 +56,7 @@ def get_ig_insights(page: Page):
             for item in ig_media_insights:
                 insights_data.append(item._json)
 
-        if media["media_type"] in ["IMAGE", "VIDEO"] and media["media_product_type"] != "REELS" and "/tv/" not in media["permalink"]:
+        if (media["media_type"] in ["IMAGE", "VIDEO"] and media["media_product_type"] != "REELS" and "/tv/" not in media["permalink"]):
             params = {"metric": ["profile_activity"], "breakdown": "action_type"}
             ig_media_insights = IGMedia(media["id"]).get_insights(fields=fields, params=params)
             if ig_media_insights:

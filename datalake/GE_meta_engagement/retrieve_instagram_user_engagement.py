@@ -6,7 +6,7 @@ from configparser import ConfigParser
 import utilss as utils
 import os
 
-FOLDER = f'./IG/user'
+FOLDER = f"./IG/user"
 if not os.path.exists(FOLDER):
     os.makedirs(FOLDER)
 
@@ -28,7 +28,9 @@ def get_ig_insights(page: Page):
     # USE ONLY UGUSER
     # GET IG User: Represents an Instagram Business Account or an Instagram Creator Account.
     # https://developers.facebook.com/docs/instagram-api/reference/ig-user
-    ig_business_account = Page(page.get_id()).api_get(fields=["instagram_business_account"])
+    ig_business_account = Page(page.get_id()).api_get(
+        fields=["instagram_business_account"]
+    )
     if "instagram_business_account" not in ig_business_account:
         print(f"NO INSTAGRAM BUSINESS ACCOUNT LINKED TO PAGE {page.get_id()}")
         return
@@ -56,9 +58,22 @@ def get_ig_insights(page: Page):
 
     # TODO: Use since-until for playing with dates
     # https://developers.facebook.com/docs/instagram-api/reference/ig-user/insights#range-2
-    fields=[]
-    params = {"since": "2023-08-01", "until": "2023-08-07", "period": "day", "metric": ["follows_and_unfollows", "reach", "profile_views", "accounts_engaged"], "metric_type": "total_value"}
-    ig_user_insights = IGUser(ig_business_account_id).get_insights(fields=fields, params=params)
+    fields = []
+    params = {
+        "since": "2023-08-01",
+        "until": "2023-08-07",
+        "period": "day",
+        "metric": [
+            "follows_and_unfollows",
+            "reach",
+            "profile_views",
+            "accounts_engaged",
+        ],
+        "metric_type": "total_value",
+    }
+    ig_user_insights = IGUser(ig_business_account_id).get_insights(
+        fields=fields, params=params
+    )
 
     insights_data = []
     if ig_user_insights:
@@ -69,7 +84,9 @@ def get_ig_insights(page: Page):
     file_content = ig_user._json
     file_content["insights"] = insights_data
 
-    filename = f"{FOLDER}/IG-{ig_business_account_id}-{ig_account_username}-page_insights.json"
+    filename = (
+        f"{FOLDER}/IG-{ig_business_account_id}-{ig_account_username}-page_insights.json"
+    )
     utils.save_json_file(filename, json_content=file_content)
 
 
@@ -95,5 +112,5 @@ def main():
         get_ig_insights(page)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

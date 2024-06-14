@@ -1,10 +1,10 @@
 """MODULE TO CALL DATAPIPELINE"""
+
 import sys
 import time
 import argparse
 
 sys.path.append("../")
-
 
 from GE_YT.reader import YouTubeAPIAuthenticator, YouTubeReader
 from GE_YT.writer import YouTubeWriter
@@ -57,46 +57,35 @@ def main():
 
     for result in reader.get_channels(configs=configs["channels"]):
         print(f"done fetching channels {len(result)}")
-        # local_writer.sink(
-        #     payload=result, folder_name="channels", folder_path=folder_path
-        # )
-
         # azure_writer.sink(
         #     payload=result, folder_name="channels", folder_path=folder_path
         # )
 
     for channel_video in reader.get_channel_videos():
         print(f"done getting channel videos {len(channel_video)}")
-        # local_writer.sink(
-        #     payload=channel_video, folder_name="channel_videos", folder_path=folder_path
-        # )
         # azure_writer.sink(
         #     payload=channel_video, folder_name="channel_videos", folder_path=folder_path
         # )
 
     # for result in reader.get_other_stats(other_endpoints):
     #     endpoint = result["endpoint"]
-    #     local_writer.sink(payload=result, folder_name=endpoint, folder_path=folder_path)
     #     # azure_writer.sink(payload=result, folder_name=endpoint, folder_path=folder_path)
 
     for video in reader.get_videos(
         configs=configs["video_stats"], endpoint="video_stats"
     ):
-        # local_writer.sink(payload=video, folder_name="videos", folder_path="channels")
-        azure_writer.sink(payload=video, folder_name="videos", folder_path="channels")
+        azure_writer.sink(
+            payload=video, folder_name="videos", folder_path="channels", indent=None
+        )
 
     for video in reader.get_videos(
         configs=configs["traffic_source"], endpoint="traffic_source"
     ):
-        # local_writer.sink(
-        #     payload=video,
-        #     folder_name="insightTrafficSourceType",
-        #     folder_path="breakdown",
-        # )
         azure_writer.sink(
             payload=video,
             folder_name="insightTrafficSourceType",
             folder_path="breakdowns",
+            indent=None,
         )
 
 

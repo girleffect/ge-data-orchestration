@@ -7,17 +7,13 @@ import sys
 from typing import Generator, Any, Dict, List
 from datetime import datetime
 
-from facebook_business.api import FacebookAdsApi
 from facebook_business.adobjects.page import Page
-from facebook_business.adobjects.pagepost import PagePost
 from facebook_business.adobjects.iguser import IGUser
 from facebook_business.adobjects.user import User
 from facebook_business.adobjects.igmedia import IGMedia
 
 sys.path.append("../")
 
-from utils.file_handlers import load_file
-from utils.date_handlers import string_to_date, date_iterator
 from utils.quota_handler import retry_handler, api_handler
 
 
@@ -30,6 +26,7 @@ class ErrorHanlder:
 
 class FacebookException(Exception):
     """Base class exception for Facebook"""
+
 
 class MediaEngagements:
     """Instagram Media Insights Reader"""
@@ -93,7 +90,7 @@ class MediaEngagements:
         print("ERROR: ANOTHER MEDIA")
         print(media)
         return {}
-    
+
     @retry_handler(
         exceptions=ConnectionError, initial_wait=3, total_tries=3, backoff_factor=2
     )

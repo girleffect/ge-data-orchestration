@@ -13,13 +13,13 @@ from facebook_business.adobjects.pagepost import PagePost
 
 sys.path.append("../")
 
-from utils.file_handlers import load_file
-from utils.date_handlers import string_to_date, date_iterator
+from utils.date_handlers import string_to_date
 from utils.quota_handler import retry_handler, api_handler
 
 
 class FacebookException(Exception):
     """Base class exception for Facebook"""
+
 
 class PostEngagements:
     """Class to read data from Facebook"""
@@ -47,7 +47,7 @@ class PostEngagements:
         if post_insights:
             _ = [insights_data.append(item._json) for item in post_insights]
         return insights_data
-    
+
     @retry_handler(
         exceptions=ConnectionError, initial_wait=3, total_tries=3, backoff_factor=2
     )

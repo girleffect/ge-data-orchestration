@@ -216,7 +216,7 @@ class AzureJSONWriter(AzureWriter):
         """method to write data"""
 
         if self.configs["auth_method"] != "sas_token":
-            _ = self.check_exists(container_name=self.container)``
+            _ = self.check_exists(container_name=self.container)
 
         write_path = f"{write_path}.json"
         blob_client: BlobClient = self.service.get_blob_client(

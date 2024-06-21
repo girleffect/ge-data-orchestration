@@ -1,5 +1,6 @@
 #!/usr/bin/python
 """MODULE TO LOG ERRORS AND SEND NOTIFICATIONS"""
+
 # pylint: disable=broad-except
 import sys
 from typing import Union

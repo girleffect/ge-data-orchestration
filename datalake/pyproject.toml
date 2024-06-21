@@ -1,0 +1,15 @@
+# indent-style = "tab"
+docstring-code-format = true
+
+# 4. Ignore `E402` (import violations) in all `__init__.py` files, and in select subdirectories.
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["E402"]
+"**/{tests,docs,tools}/*" = ["E402"]
+
+[tool.ruff]
+# exclude = ["./GE_GA/*", ".//*", "**/tools/*"]
+include = [
+    "log_errors.py", "base_writter.py",
+    "GE_YT/datapipeline.py", "GE_YT/reader.py", "GE_YT/writer.py",
+    "GE_meta_engagement/datapipeline.py", "GE_meta_engagement/reader.py", "GE_meta_engagement/writer.py","GE_meta_engagement/post_engagement.py","GE_meta_engagement/media_engagement.py",
+    ]

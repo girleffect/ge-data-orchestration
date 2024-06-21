@@ -10,3 +10,5 @@ facebook_business
 pytest
 coverage
 pytest-cov
+pylint
+ruff

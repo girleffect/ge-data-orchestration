@@ -1,5 +1,6 @@
 #!/usr/bin/python
 """YOUTUBE API WRITER"""
+
 import sys
 
 sys.path.append("../")
@@ -46,7 +47,6 @@ class MetaWriter(BaseWriter):
 
         date: str = payload["date"]
         date_split: list = date.split("-")
-
         # post_id: dict = payload["post_id"]
         data = payload["data"]
 

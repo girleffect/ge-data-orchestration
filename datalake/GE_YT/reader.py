@@ -3,7 +3,6 @@
 # pylint: disable=unused-import
 import sys
 import os
-from datetime import date, timedelta
 from typing import Generator, Any, Dict
 
 sys.path.append("../")

@@ -26,19 +26,19 @@ def main():
     config_file = args.config_file
     storage_account = args.storage_account
     container = args.container
-    folder_path = args.folder_path
+    folder_path = args.folder_path    # noqa F841
 
     # secrets = load_file(secret_file)
     configs = load_file(config_file)
 
-    other_endpoints = {
+    other_endpoints = {    # noqa F841
         "basic_stats": configs["basic_stats"],
         # "source_stats": configs["source_stats"],
     }
 
     youtube_authenticator = YouTubeAPIAuthenticator(creds_file=secrets_file)
     reader = YouTubeReader(authenticator=youtube_authenticator)
-    local_writer = YouTubeWriter(
+    local_writer = YouTubeWriter(    # noqa F841
         container="./data",
         destination="local_json",
         configs={"overwrite": True},

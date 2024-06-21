@@ -47,7 +47,7 @@ class YouTubeWriter(BaseWriter):
         date: str = payload["date"]
         date_split: list = date.split("-")
         channel_data: dict = payload["channel_data"]
-        channel_name, channel_id = (
+        channel_name, channel_id = (        # noqa F841
             channel_data["channel_name"],
             channel_data["channel_id"],
         )

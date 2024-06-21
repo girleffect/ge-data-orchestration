@@ -46,7 +46,7 @@ class MetaWriter(BaseWriter):
             raise KeyError("invalid payload expecting: data, date")
 
         date: str = payload["date"]
-        date_split: list = date.split("-")
+        date_split: list = date.split("-")    # noqa F841
         # post_id: dict = payload["post_id"]
         data = payload["data"]
 

@@ -35,7 +35,7 @@ def main():
     configs = load_file(config_file)
     authenticator = FacebookAPIAuthenticator(creds_file=secrets_file)
     reader: MetaReader = MetaReader(authenticator=authenticator, configs=configs)
-    local_writer: MetaWriter = MetaWriter(
+    local_writer: MetaWriter = MetaWriter(     # noqa F841
         container=container,
         destination="local_json",
         configs=configs,

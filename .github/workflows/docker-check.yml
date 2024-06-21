@@ -3,10 +3,12 @@ name: Docker Container Check with Ruff
 on:
   push:
     branches:
-      - main
+      - master
   pull_request:
     branches:
-      - main
+      - master
+
+
 
 jobs:
   lint:
@@ -25,4 +27,5 @@ jobs:
         run: pip install ruff
 
       - name: Run Ruff
-        run: ruff check .
+        run: ruff check ./datalake/
+

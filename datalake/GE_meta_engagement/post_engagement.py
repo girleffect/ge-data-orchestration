@@ -3,6 +3,8 @@
 # import os
 import sys
 import copy
+import warnings
+import logging
 from typing import Generator, Any, Dict, List
 from datetime import datetime
 
@@ -16,6 +18,8 @@ sys.path.append("../")
 from utils.date_handlers import string_to_date
 from utils.quota_handler import retry_handler, api_handler
 
+warnings.filterwarnings('ignore', category=UserWarning) 
+logger = logging.getLogger(__name__)
 
 class FacebookException(Exception):
     """Base class exception for Facebook"""
@@ -26,7 +30,6 @@ class PostEngagements:
 
     def __init__(self, authenticator, configs: dict):
         self.authenticator = authenticator
-        # self.authenticator.initialize()
         self.configs = configs
 
     def build_query(self, configs: dict) -> Dict[str, Any]:
@@ -90,7 +93,7 @@ class PostEngagements:
                 "date": datetime.now().strftime("%Y-%m-d%"),
                 "file_name": file_name,
             }
-            print(f"Post insights fetched: {post['id']}")
+            logger.info(f"Post insights fetched: {post['id']}")
 
     def get_data(self) -> Generator[Dict[str, Any], None, None]:
         """Get insights for all pages"""

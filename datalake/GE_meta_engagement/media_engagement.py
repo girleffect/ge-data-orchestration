@@ -2,6 +2,8 @@
 """FACEBOOK API READER"""
 # import os
 import sys
+import warnings
+import logging
 
 # import copy
 from typing import Generator, Any, Dict, List
@@ -15,6 +17,9 @@ from facebook_business.adobjects.igmedia import IGMedia
 sys.path.append("../")
 
 from utils.quota_handler import retry_handler, api_handler
+
+warnings.filterwarnings("ignore", category=UserWarning)
+logger = logging.getLogger(__name__)
 
 
 class ErrorHanlder:
@@ -33,7 +38,6 @@ class MediaEngagements:
 
     def __init__(self, authenticator, configs: dict):
         self.authenticator = authenticator
-        # self.authenticator.initialize()
         self.configs = configs
         self.error_handler = ErrorHanlder()
 
@@ -43,7 +47,7 @@ class MediaEngagements:
             fields=["instagram_business_account"]
         )
         if "instagram_business_account" not in ig_business_account:
-            print(f"NO INSTAGRAM BUSINESS ACCOUNT LINKED TO PAGE {page.get_id()}")
+            logger.info(f"NO INSTAGRAM BUSINESS ACCOUNT LINKED TO PAGE {page.get_id()}")
             return None
         return ig_business_account["instagram_business_account"]["id"]
 
@@ -87,8 +91,8 @@ class MediaEngagements:
                     "saved",
                 ]
             }
-        print("ERROR: ANOTHER MEDIA")
-        print(media)
+        logger.info("ERROR: ANOTHER MEDIA")
+        logger.info(media)
         return {}
 
     @retry_handler(
@@ -112,8 +116,8 @@ class MediaEngagements:
         except ConnectionError as err:
             raise ConnectionError(err) from err
         except Exception as err:
-            print(f"ERROR: {err}")
-            error_msg = f"media_id: {media['id']} params: {params} \n {err}"
+            logger.info(f"ERROR: {err}")
+            error_msg = f"media_id: {media['id']} params: {params} \n {err.body()['error']}"
             self.error_handler.error_list.append(error_msg)
             return []
 
@@ -165,5 +169,5 @@ class MediaEngagements:
         for page in User(user_id).get_accounts(params={"limit": 10}):
             yield from self._get_ig_insights(page, fields)
         if self.error_handler.error_list:
-            print("ERRORS")
-            print("\n".join([e for e in self.error_handler.error_list]))
+            logger.info("ERRORS")
+            logger.info("\n".join([e for e in self.error_handler.error_list]))
